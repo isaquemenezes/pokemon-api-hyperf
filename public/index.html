@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Finder</title>
+    <style>
+        #pokemon-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .pokemon {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            width: 200px;
+        }
+        .pokemon img {
+            width: 100px;
+            height: 100px;
+        }
+        .pokemon-moves {
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pokémon Finder</h1>
+    <button id="fetch-pokemons">Buscar Pokémons</button>
+    <div id="pokemon-container"></div>
+
+    <script>
+        document.getElementById('fetch-pokemons').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/pokemons/random');
+                const pokemons = await response.json();
+                
+                const container = document.getElementById('pokemon-container');
+                container.innerHTML = ''; // Limpa o container
+
+                pokemons.forEach(pokemon => {
+                    const pokemonDiv = document.createElement('div');
+                    pokemonDiv.className = 'pokemon';
+                    
+                    pokemonDiv.innerHTML = `
+                        <h2>${pokemon.name}</h2>
+                        <img src="${pokemon.image}" alt="${pokemon.name}">
+                        <div class="pokemon-moves">
+                            ${pokemon.moves.map(move => `
+                                <div>
+                                    <strong>${move.name}</strong>
+                                    <a href="${move.url}" target="_blank">Detalhes</a>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    
+                    container.appendChild(pokemonDiv);
+                });
+            } catch (error) {
+                console.error('Erro ao buscar pokémons:', error);
+            }
+        });
+    </script>
+</body>
+</html>
