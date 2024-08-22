@@ -39,7 +39,7 @@ curl http://localhost:9501/pokemons
 - [Pokemon API](https://pokeapi.co/api/v2/pokemon)
 
 ## Resultados
-- [Link da Apresentaçaõ no google drive](https://drive.google.com/file/d/1xTqGtHlrykXdyweLJyfO9hQct-l71BPw/view?usp=sharing)
+- [Link da Apresentação no google drive](https://drive.google.com/file/d/1xTqGtHlrykXdyweLJyfO9hQct-l71BPw/view?usp=sharing)
 
 <img src="preview001.png">
 <img src="preview002.png">
