@@ -30,7 +30,7 @@ class PokemonController
             });
         }
 
-        // Executa todas as tarefas em paralelo e aguarda os resultados
+        // Executa todas as tarefas e aguarda os resultados
         $results = $parallel->wait();
 
         $pokemons = array_map(function ($result) {
@@ -42,7 +42,7 @@ class PokemonController
                     $moveUrl = $move['move']['url'];
                     $moveDetalhes = file_get_contents($moveUrl);
     
-                    // Verifica se a requisição foi bem-sucedida
+                    // Verifica se a requisição 
                     $moveData = $moveDetalhes 
                         ? json_decode($moveDetalhes, true) 
                         : null;
@@ -59,7 +59,6 @@ class PokemonController
         return $response->json($pokemons);
         
     }
-
   
 
     public function getAllPokemons (ResponseInterface $response) 
