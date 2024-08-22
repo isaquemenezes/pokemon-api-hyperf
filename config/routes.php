@@ -15,4 +15,5 @@ use Hyperf\HttpServer\Router\Router;
 Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@index');
 
 Router::addRoute(['GET', 'POST'], '/pokemons', 'App\Controller\PokemonController@getPokemons');
+Router::addRoute(['GET', 'POST'], '/poke', 'App\Controller\PokemonController@getPoke');
 

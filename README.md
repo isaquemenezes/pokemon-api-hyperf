@@ -1,4 +1,12 @@
 # Notas
+- entre na aplicacao
+```
+cd /data/project/nome_do_seu_projeto
+```
+- Execute a aplicação
+```
+ php bin/hyperf.php start
+ ```
 
 ## Referências:
 - [Coroutines. O que são corrotinas | Dias de Dev](https://www.youtube.com/watch?v=Nbt0eQHChoI)

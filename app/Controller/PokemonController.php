@@ -14,59 +14,63 @@ use Hyperf\HttpServer\Contract\ResponseInterface;
  */
 class PokemonController
 {
-    public function getPokemons(RequestInterface $request, ResponseInterface $response)
+    public function getPokemons(ResponseInterface $response)
     {
-
-        $pokemonId = rand(1, 898);        
-     
+        $pokemonIds = array_rand(range(1, 898), 5);
+        
         $parallel = new Parallel();
 
-        // Adiciona a tarefa ao Parallel para buscar o Pokémon
-        $parallel->add(function () use ($pokemonId) {
-            $url = "https://pokeapi.co/api/v2/pokemon/{$pokemonId}/";
-            $response = file_get_contents($url);
-            if ($response === false) {
-                return null;
-            }
-            return json_decode($response, true);
-        });
+        // Adiciona as tarefas ao Parallel para buscar cada Pokémon
+        foreach ($pokemonIds as $id) 
+        {
+            $parallel->add(function () use ($id) 
+            {
+                $url = "https://pokeapi.co/api/v2/pokemon/{$id}/";
+                return json_decode(file_get_contents($url), true);
+            });
+        }
 
-        // Executa a tarefa em paralelo e aguarda o resultado
-        $result = $parallel->wait()[0];
+        // Executa todas as tarefas em paralelo e aguarda os resultados
+        $results = $parallel->wait();
 
-        // Processa o Pokémon e limita o número de movimentos retornados
-        $pokemon = $result ? [
-            'name' => $result['name'],
-            'image' => $result['sprites']['front_default'],
-            'moves' => array_slice(array_map(function ($move) {
-                return [
-                    'name' => $move['move']['name'],
-                    'url' => $move['move']['url'],
-                ];
-            }, $result['moves']), 0, 5),
-        ] : null;
+        $pokemons = array_map(function ($result) {
+            return [
+                'name' => $result['name'],
+                'image' => $result['sprites']['front_default'],
+                'moves' => array_slice(array_map(function ($move) {
 
-       
-        return $response->json($pokemon);  
-        
+                    $moveUrl = $move['move']['url'];
+                    $moveDetalhes = file_get_contents($moveUrl);
     
+                    // Verifica se a requisição foi bem-sucedida
+                    $moveData = $moveDetalhes 
+                        ? json_decode($moveDetalhes, true) 
+                        : null;
+
+                    return [
+                        'name' => $move['move']['name'],
+                        'url' => $move['move']['url'],
+                        'effect' => $moveData['effect_entries'][0]['effect'] ?? 'Nenhum efeito disponível',
+                    ];
+                }, $result['moves']), 0, 2),
+            ];
+        }, $results);
+
+        return $response->json($pokemons);
         
     }
 
-   
+  
 
+    public function getAllPokemons (ResponseInterface $response) 
+    {
+       
+        $url = 'https://pokeapi.co/api/v2/pokemon';            
+        
+        $responseFromApi = file_get_contents($url);
 
-    public function getAllPokemons (ResponseInterface $response) {
-          // URL da API do Pokémon
-          $url = 'https://pokeapi.co/api/v2/pokemon';
-            
-          // Fazer uma chamada à API usando file_get_contents() (simples) ou Guzzle (mais robusto).
-          $responseFromApi = file_get_contents($url);
+        $todo = json_decode($responseFromApi, true);
 
-          // Opcional: Decodificar o JSON retornado pela API, se necessário.
-          $todo = json_decode($responseFromApi, true);
-
-          // Retornar os dados da API como JSON.
-          return $response->json($todo);
+        return $response->json($todo);
     }
 }
