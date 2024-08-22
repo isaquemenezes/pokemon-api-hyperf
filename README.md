@@ -1,12 +1,20 @@
-# Notas
-- entre na aplicacao
+# Construa e Execute
+## Clone o Repositório
 ```
-cd nome_do_seu_projeto
+git clone https://github.com/isaquemenezes/pokemon-api-hyperf.git
+cd pokemon-api-hyperf
 ```
-- Execute a aplicação
+## Execute o Docker Compose para construir e iniciar o contêiner:
 ```
- php bin/hyperf.php start
- ```
+docker compose up --build
+```
+
+## Instalar Dependências e Iniciar a Aplicação
+```
+composer install
+php bin/hyperf.php start
+```
+
 
 ## Tecnologias Utilizadas
 - [Docker](https://docs.docker.com/)
@@ -16,7 +24,7 @@ cd nome_do_seu_projeto
 - [Git](https://git-scm.com/)
 - [GiHub](https://github.com/)
 - [Hyperf](https://hyperf.wiki/3.1/#/en/)
-- [PHP](https://www.php.net/)
+- [PHP | 8.1.27 ](https://www.php.net/)
 - [Composer](https://getcomposer.org/)
 
 ## Referências:
