@@ -2,11 +2,11 @@
 namespace App\Controller;
 
 use Hyperf\HttpServer\Annotation\AutoController;
-use Hyperf\Utils\Coroutine;
-// use Hyperf\Utils\Parallel;
+// use Hyperf\Utils\Coroutine;
+
 use Hyperf\Coroutine\Parallel;
 
-use Hyperf\HttpServer\Contract\RequestInterface;
+// use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 
 /**
